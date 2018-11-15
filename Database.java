@@ -1,4 +1,4 @@
-package com.example.sophi.booklist;
+package com.example.d18123347.booklist;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -24,7 +24,7 @@ public class Database   {
 
     // SQL statement to create the database
     private static final String DATABASE_CREATE =
-            "create table Contact_Details (_id integer primary key autoincrement, " +
+            "create table Book_Details (_id integer primary key autoincrement, " +
                     "title text not null, " +
                     "author text not null, "  +
                     "genre text not null, " +
@@ -64,7 +64,6 @@ public class Database   {
         //
         public void onCreate(SQLiteDatabase db)
         {
-
             db.execSQL(DATABASE_CREATE);
         }
 
