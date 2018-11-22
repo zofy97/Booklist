@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Title: "
+        android:textSize="20dp"
+        android:id="@+id/titleInput"/>
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/titleField"
+        app:layout_constraintLeft_toRightOf="@+id/titleInput" />
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Author: "
+        android:textSize="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/titleInput"
+        android:id="@+id/authorInput"/>
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/authorField"
+        app:layout_constraintLeft_toRightOf="@+id/authorInput"
+        app:layout_constraintTop_toBottomOf="@+id/titleField"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Genre: "
+        android:textSize="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/authorInput"
+        android:id="@+id/genreInput"/>
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/genreField"
+        app:layout_constraintLeft_toRightOf="@+id/genreInput"
+        app:layout_constraintTop_toBottomOf="@+id/authorField"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Year: "
+        android:textSize="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/genreInput"
+        android:id="@+id/yearInput"/>
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/yearField"
+        app:layout_constraintLeft_toRightOf="@+id/yearInput"
+        app:layout_constraintTop_toBottomOf="@+id/genreField"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Start of Reading: "
+        android:textSize="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/yearInput"
+        android:id="@+id/startOfReadingInput"/>
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/startOfReadingField"
+        app:layout_constraintLeft_toRightOf="@+id/startOfReadingInput"
+        app:layout_constraintTop_toBottomOf="@+id/yearField"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="End of Reading: "
+        android:textSize="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/startOfReadingInput"
+        android:id="@+id/endOfReadingInput"/>
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/endOfReadingField"
+        app:layout_constraintLeft_toRightOf="@+id/endOfReadingInput"
+        app:layout_constraintTop_toBottomOf="@+id/startOfReadingField"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="save"
+        app:layout_constraintTop_toBottomOf="@+id/endOfReadingField"
+        android:id="@+id/saveButton"/>
+
+</android.support.constraint.ConstraintLayout>

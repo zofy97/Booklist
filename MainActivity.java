@@ -1,9 +1,12 @@
 package com.example.d18123347.booklist;
 
+import android.content.Intent;
 import android.os.Bundle;import android.database.Cursor;
 import android.app.ListActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
@@ -14,6 +17,7 @@ public class MainActivity extends ListActivity {
     ListView list;
     SimpleCursorAdapter myAdapter;
     Cursor cursor;
+    Button button;
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -22,10 +26,18 @@ public class MainActivity extends ListActivity {
         db = new Database(this);
 
         db.open();
-        //db.deleteAllBooks();
+        db.deleteAllBooks();
         addRows();
 
         cursor = db.getAllBooks();
+
+        button = (Button) findViewById(R.id.addButton);
+        button.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, InputActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Log.i("test", "number of rows returned are" + cursor.getCount());
         String[] col = new String[] {"title"};
@@ -40,11 +52,11 @@ public class MainActivity extends ListActivity {
         super.onListItemClick(list,v,position,id);
         Cursor cursor = (Cursor) myAdapter.getItem(position);
         String book = cursor.getString(1);
-        Log.i("test", "the value of mystring is " + book);
         Toast.makeText(this, book, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(MainActivity.this, BookActivity.class);
+        startActivity(intent);
     }
 
-    //---add some people---
     public void addRows()
     {
         long id;
