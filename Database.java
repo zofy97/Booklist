@@ -104,6 +104,10 @@ public class Database   {
                 "=" + rowId, null) > 0;
     }
 
+    public boolean deleteAllBooks() {
+        return db.delete(DATABASE_TABLE, null, null)   > 0;
+    }
+
     public Cursor getAllBooks()
     {
         return db.query(DATABASE_TABLE, new String[]

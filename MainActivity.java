@@ -22,14 +22,14 @@ public class MainActivity extends ListActivity {
         db = new Database(this);
 
         db.open();
-
-        //addRows();
+        //db.deleteAllBooks();
+        addRows();
 
         cursor = db.getAllBooks();
 
         Log.i("test", "number of rows returned are" + cursor.getCount());
-        String[] col = new String[] {"title","author","genre","year","startOfReading","endOfReading"};
-        int[] id = new int[] {R.id.title,R.id.author,R.id.genre,R.id.year,R.id.startOfReading,R.id.endOfReading};
+        String[] col = new String[] {"title"};
+        int[] id = new int[] {R.id.title};
         myAdapter = new SimpleCursorAdapter(this, R.layout.row, cursor, col, id);
         setListAdapter(myAdapter);
 
@@ -49,25 +49,25 @@ public class MainActivity extends ListActivity {
     {
         long id;
         id = db.insertBook(
-                "PaperTowns",
-                "JohnGreen",
-                "Youngadult",
+                "Paper Towns",
+                "John Green",
+                "Young adult",
                 "2008",
                 "13.11.2018",
                 "");
 
         id = db.insertBook(
-                "The_Invisible_Man",
-                "H._G._Wells",
+                "The Invisible Man",
+                "H. G. Wells",
                 "Horror",
                 "1897",
                 "07.11.2018",
                 "12.11.2018");
 
         id = db.insertBook(
-                "After_the_snow",
-                "S._D._Crockett",
-                "Young_adult",
+                "After the snow",
+                "S. D. Crockett",
+                "Young adult",
                 "2012",
                 "27.10.2018",
                 "05.11.2018");

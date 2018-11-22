@@ -12,52 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="serif-monospace"
+        android:padding="10dp"
         android:textSize="20dp"/>
-
-    <TextView
-        android:id="@+id/author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="serif-monospace"
-        android:textSize="20dp"
-        android:paddingRight="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/title"/>
-
-    <TextView
-        android:id="@+id/genre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="serif-monospace"
-        android:textSize="20dp"
-        android:paddingRight="10dp"
-        app:layout_constraintTop_toTopOf="@id/author"
-        app:layout_constraintLeft_toRightOf="@+id/author"/>
-
-    <TextView
-        android:id="@+id/year"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="serif-monospace"
-        android:textSize="20dp"
-        app:layout_constraintTop_toTopOf="@id/genre"
-        app:layout_constraintLeft_toRightOf="@+id/genre"/>
-
-    <TextView
-        android:id="@+id/startOfReading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="serif-monospace"
-        android:textSize="20dp"
-        android:paddingRight="10dp"
-        app:layout_constraintTop_toBottomOf="@id/year"/>
-
-    <TextView
-        android:id="@+id/endOfReading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="serif-monospace"
-        android:textSize="20dp"
-        app:layout_constraintTop_toTopOf="@id/startOfReading"
-        app:layout_constraintLeft_toRightOf="@+id/startOfReading"/>
 
 </android.support.constraint.ConstraintLayout>
