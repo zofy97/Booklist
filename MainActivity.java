@@ -1,8 +1,9 @@
-package com.example.d18123347.booklist;
+package com.example.sophi.booklist;
 
 import android.content.Intent;
 import android.os.Bundle;import android.database.Cursor;
 import android.app.ListActivity;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,8 @@ public class MainActivity extends ListActivity {
     SimpleCursorAdapter myAdapter;
     Cursor cursor;
     Button button;
+    public static Cursor bookCursor;
+    FloatingActionButton addButton;
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -26,10 +29,18 @@ public class MainActivity extends ListActivity {
         db = new Database(this);
 
         db.open();
-        db.deleteAllBooks();
-        addRows();
+        //db.deleteAllBooks();
+        //addRows();
 
         cursor = db.getAllBooks();
+
+        addButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        addButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, InputActivity.class);
+                startActivity(intent);
+            }
+        });
 
         button = (Button) findViewById(R.id.addButton);
         button.setOnClickListener(new View.OnClickListener(){
@@ -52,8 +63,10 @@ public class MainActivity extends ListActivity {
         super.onListItemClick(list,v,position,id);
         Cursor cursor = (Cursor) myAdapter.getItem(position);
         String book = cursor.getString(1);
+        bookCursor = cursor;
         Toast.makeText(this, book, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(MainActivity.this, BookActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 

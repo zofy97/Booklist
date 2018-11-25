@@ -3,6 +3,7 @@ package com.example.sophi.booklist;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +17,9 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class InputActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class UpdateActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     Database db;
+    Cursor cursor;
     Button saveButton;
     Button startButton;
     Button endButton;
@@ -35,6 +37,8 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
         db = new Database(this);
 
         db.open();
+
+        cursor = MainActivity.bookCursor;
 
         startButton = (Button) findViewById(R.id.picDateStart);
         endButton = (Button) findViewById(R.id.picDateEnd);
@@ -54,11 +58,17 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
         });
 
         title = (EditText) findViewById(R.id.titleField);
+        title.setText(cursor.getString(1));
         author = (EditText) findViewById(R.id.authorField);
+        author.setText(cursor.getString(2));
         genre = (EditText) findViewById(R.id.genreField);
+        genre.setText(cursor.getString(3));
         year = (EditText) findViewById(R.id.yearField);
+        year.setText(cursor.getString(4));
         startOfReading = (EditText) findViewById(R.id.startOfReadingField);
+        startOfReading.setText(cursor.getString(5));
         endOfReading = (EditText) findViewById(R.id.endOfReadingField);
+        endOfReading.setText(cursor.getString(6));
 
         saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener(){
@@ -75,11 +85,11 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
                     String startOfReadingInput = startOfReading.getText().toString();
                     String endOfReadingInput = endOfReading.getText().toString();
 
-                    db.insertBook(titleInput, authorInput, genreInput, yearInput, startOfReadingInput, endOfReadingInput);
-                    String message = "Saved";
+                    db.updateBook(cursor.getInt(0), titleInput, authorInput, genreInput, yearInput, startOfReadingInput, endOfReadingInput);
+                    String message = "Edited";
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(InputActivity.this, MainActivity.class);
+                    Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
                     finish();
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);

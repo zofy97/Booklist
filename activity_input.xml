@@ -5,24 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context=".MainActivity">
+    tools:context=".InputActivity">
 
     <TextView
+        android:id="@+id/titleInput"
         android:layout_width="100dp"
         android:layout_height="50dp"
+        android:layout_marginTop="8dp"
         android:text="Title: "
+        android:textAlignment="center"
         android:textSize="20dp"
-        android:id="@+id/titleInput"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/titleField"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:id="@+id/titleField"
-        app:layout_constraintLeft_toRightOf="@+id/titleInput" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toRightOf="@+id/titleInput"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="100dp"
         android:layout_height="50dp"
+        android:textAlignment="center"
         android:text="Author: "
         android:textSize="20dp"
         app:layout_constraintTop_toBottomOf="@+id/titleInput"
@@ -38,6 +44,7 @@
     <TextView
         android:layout_width="100dp"
         android:layout_height="50dp"
+        android:textAlignment="center"
         android:text="Genre: "
         android:textSize="20dp"
         app:layout_constraintTop_toBottomOf="@+id/authorInput"
@@ -53,6 +60,7 @@
     <TextView
         android:layout_width="100dp"
         android:layout_height="50dp"
+        android:textAlignment="center"
         android:text="Year: "
         android:textSize="20dp"
         app:layout_constraintTop_toBottomOf="@+id/genreInput"
@@ -68,38 +76,65 @@
     <TextView
         android:layout_width="100dp"
         android:layout_height="50dp"
+        android:textAlignment="center"
         android:text="Start of Reading: "
         android:textSize="20dp"
         app:layout_constraintTop_toBottomOf="@+id/yearInput"
         android:id="@+id/startOfReadingInput"/>
 
     <EditText
-        android:layout_width="300dp"
-        android:layout_height="50dp"
         android:id="@+id/startOfReadingField"
-        app:layout_constraintLeft_toRightOf="@+id/startOfReadingInput"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toEndOf="@+id/picDateStart"
+        app:layout_constraintTop_toBottomOf="@+id/yearField" />
+
+    <Button
+        android:id="@+id/picDateStart"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:onClick="datePicker"
+        android:text="Pic starting date"
+        android:textSize="10dp"
+        app:layout_constraintStart_toEndOf="@+id/startOfReadingInput"
         app:layout_constraintTop_toBottomOf="@+id/yearField"/>
 
     <TextView
         android:layout_width="100dp"
         android:layout_height="50dp"
+        android:textAlignment="center"
         android:text="End of Reading: "
         android:textSize="20dp"
         app:layout_constraintTop_toBottomOf="@+id/startOfReadingInput"
         android:id="@+id/endOfReadingInput"/>
 
     <EditText
-        android:layout_width="300dp"
-        android:layout_height="50dp"
         android:id="@+id/endOfReadingField"
-        app:layout_constraintLeft_toRightOf="@+id/endOfReadingInput"
-        app:layout_constraintTop_toBottomOf="@+id/startOfReadingField"/>
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toEndOf="@+id/picDateEnd"
+        app:layout_constraintTop_toBottomOf="@+id/startOfReadingField" />
 
     <Button
+        android:id="@+id/picDateEnd"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:textSize="10dp"
+        android:onClick="datePicker"
+        android:text="Pic ending date"
+        app:layout_constraintStart_toEndOf="@+id/endOfReadingInput"
+        app:layout_constraintTop_toBottomOf="@+id/picDateStart" />
+
+    <Button
+        android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
         android:text="save"
-        app:layout_constraintTop_toBottomOf="@+id/endOfReadingField"
-        android:id="@+id/saveButton"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/endOfReadingInput" />
 
 </android.support.constraint.ConstraintLayout>

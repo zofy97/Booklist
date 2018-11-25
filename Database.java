@@ -1,4 +1,4 @@
-package com.example.d18123347.booklist;
+package com.example.sophi.booklist;
 
 import android.content.ContentValues;
 import android.content.Context;
