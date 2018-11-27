@@ -85,7 +85,7 @@ public class UpdateActivity extends AppCompatActivity implements DatePickerDialo
                     String startOfReadingInput = startOfReading.getText().toString();
                     String endOfReadingInput = endOfReading.getText().toString();
 
-                    db.updateBook(cursor.getInt(0), titleInput, authorInput, genreInput, yearInput, startOfReadingInput, endOfReadingInput);
+                    //db.updateBook(cursor.getInt(0), titleInput, authorInput, genreInput, yearInput, startOfReadingInput, endOfReadingInput);
                     String message = "Edited";
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 

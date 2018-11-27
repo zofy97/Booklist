@@ -7,8 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +19,7 @@ public class BookActivity extends Activity {
     Database db;
     Cursor cursor;
     Context context = this;
+    ImageView pictureField;
     TextView titleField;
     TextView authorField;
     TextView genreField;
@@ -34,6 +37,10 @@ public class BookActivity extends Activity {
 
         db.open();
 
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+        pictureField = (ImageView) findViewById(R.id.picture);
         titleField = (TextView) findViewById(R.id.title);
         authorField = (TextView) findViewById(R.id.author);
         genreField = (TextView) findViewById(R.id.genre);
@@ -45,9 +52,6 @@ public class BookActivity extends Activity {
         deleteButton = (Button) findViewById(R.id.deleteButton);
 
         cursor = MainActivity.bookCursor;
-
-        String[] col = new String[] {"title", "author", "genre", "year", "startOfReading", "endOfReading"};
-        int[] id = new int[] {R.id.title, R.id.author, R.id.genre, R.id.year, R.id.startOfReading, R.id.endOfReading};
 
         editButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
@@ -95,5 +99,6 @@ public class BookActivity extends Activity {
         yearField.setText(cursor.getString(4));
         startOfReadingField.setText(cursor.getString(5));
         endOfReadingField.setText(cursor.getString(6));
+        pictureField.setImageResource(cursor.getInt(7));
     }
 }

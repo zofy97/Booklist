@@ -2,32 +2,57 @@ package com.example.sophi.booklist;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
+import android.Manifest;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
+import static android.app.PendingIntent.getActivity;
+
+// https://stackoverflow.com/questions/21872789/how-to-take-pic-with-camera-and-save-it-to-database-and-show-in-listview-in-andr
 public class InputActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     Database db;
     Button saveButton;
     Button startButton;
     Button endButton;
+    Button picButton;
     EditText title;
     EditText author;
     EditText genre;
     EditText year;
     EditText startOfReading;
     EditText endOfReading;
+    ImageView picture;
     boolean buttonChoice;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    Context context = this;
+
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -38,6 +63,7 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
 
         startButton = (Button) findViewById(R.id.picDateStart);
         endButton = (Button) findViewById(R.id.picDateEnd);
+        picButton = (Button) findViewById(R.id.takePicture);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -53,12 +79,32 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
             }
         });
 
+        picButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException e) {
+
+                }
+                if (photoFile != null)  {
+                    Uri photoURI = FileProvider.getUriForFile(context, "com.example.sophi.fileprovider", photoFile);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                }
+                Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+                picture.setImageBitmap(bitmap);
+            }
+        });
+
         title = (EditText) findViewById(R.id.titleField);
         author = (EditText) findViewById(R.id.authorField);
         genre = (EditText) findViewById(R.id.genreField);
         year = (EditText) findViewById(R.id.yearField);
         startOfReading = (EditText) findViewById(R.id.startOfReadingField);
         endOfReading = (EditText) findViewById(R.id.endOfReadingField);
+        picture = (ImageView) findViewById(R.id.takePictureField);
 
         saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener(){
@@ -74,8 +120,9 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
                     String yearInput = year.getText().toString();
                     String startOfReadingInput = startOfReading.getText().toString();
                     String endOfReadingInput = endOfReading.getText().toString();
+                    String pictureInput;
 
-                    db.insertBook(titleInput, authorInput, genreInput, yearInput, startOfReadingInput, endOfReadingInput);
+                    db.insertBook(titleInput, authorInput, genreInput, yearInput, startOfReadingInput, endOfReadingInput, "");
                     String message = "Saved";
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
@@ -86,6 +133,32 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
                 }
             }
         });
+    }
+
+    String mCurrentPhotoPath;
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",   /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        galleryAddPic();
+        return image;
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
     }
 
     public void datePicker(View view){

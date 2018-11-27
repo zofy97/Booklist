@@ -20,7 +20,7 @@ public class MainActivity extends ListActivity {
     Cursor cursor;
     Button button;
     public static Cursor bookCursor;
-    FloatingActionButton addButton;
+    // FloatingActionButton addButton;
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -29,11 +29,12 @@ public class MainActivity extends ListActivity {
         db = new Database(this);
 
         db.open();
-        //db.deleteAllBooks();
-        //addRows();
+        db.deleteAllBooks();
+        addRows();
 
         cursor = db.getAllBooks();
 
+        /*
         addButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         addButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
@@ -41,6 +42,7 @@ public class MainActivity extends ListActivity {
                 startActivity(intent);
             }
         });
+        */
 
         button = (Button) findViewById(R.id.addButton);
         button.setOnClickListener(new View.OnClickListener(){
@@ -79,9 +81,10 @@ public class MainActivity extends ListActivity {
                 "Young adult",
                 "2008",
                 "13.11.2018",
+                "",
                 "");
 
-        id = db.insertBook(
+        /*id = db.insertBook(
                 "The Invisible Man",
                 "H. G. Wells",
                 "Horror",
@@ -96,5 +99,6 @@ public class MainActivity extends ListActivity {
                 "2012",
                 "27.10.2018",
                 "05.11.2018");
+                */
     }
 }

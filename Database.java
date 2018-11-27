@@ -17,7 +17,7 @@ public class Database   {
     private static final String KEY_YEAR	    = "year";
     private static final String KEY_START       = "startOfReading";
     private static final String KEY_END 	    = "endOfReading";
-    // picture
+    private static final String KEY_IMAGEPATH   = "image_path";
     private static final String DATABASE_NAME 	= "Books";
     private static final String DATABASE_TABLE 	= "Book_Details";
     private static final int DATABASE_VERSION 	= 1;
@@ -30,7 +30,8 @@ public class Database   {
                     "genre text not null, " +
                     "year text not null, " +
                     "startOfReading text not null, " +
-                    "endOfReading text not null);";
+                    "endOfReading text not null, " +
+                    "image_path text not null);";
 
     private final Context context;
     private DatabaseHelper DBHelper;
@@ -85,7 +86,7 @@ public class Database   {
         DBHelper.close();
     }
 
-    public long insertBook(String title, String author, String genre, String year, String startOfReading, String endOfReading)
+    public long insertBook(String title, String author, String genre, String year, String startOfReading, String endOfReading, String image_path)
     {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_TITLE, title);
@@ -94,12 +95,13 @@ public class Database   {
         initialValues.put(KEY_YEAR, year);
         initialValues.put(KEY_START, startOfReading);
         initialValues.put(KEY_END, endOfReading);
+        initialValues.put(KEY_IMAGEPATH, image_path);
+
         return db.insert(DATABASE_TABLE, null, initialValues);
     }
 
     public boolean deleteBook(long rowId)
     {
-        //
         return db.delete(DATABASE_TABLE, KEY_ROWID +
                 "=" + rowId, null) > 0;
     }
@@ -118,7 +120,8 @@ public class Database   {
                                 KEY_GENRE,
                                 KEY_YEAR,
                                 KEY_START,
-                                KEY_END
+                                KEY_END,
+                                KEY_IMAGEPATH,
                         },
                 null, null, null, null, null);
     }
@@ -134,7 +137,8 @@ public class Database   {
                                         KEY_GENRE,
                                         KEY_YEAR,
                                         KEY_START,
-                                        KEY_END
+                                        KEY_END,
+                                        KEY_IMAGEPATH
                                 },
                         KEY_ROWID + "=" + rowId,  null, null, null, null, null);
 
@@ -146,7 +150,7 @@ public class Database   {
     }
 
     //
-    public boolean updateBook(long rowId,String title, String author, String genre, String year, String startOfReading, String endOfReading)
+    public boolean updateBook(long rowId,String title, String author, String genre, String year, String startOfReading, String endOfReading, String image_path)
     {
         ContentValues args = new ContentValues();
         args.put(KEY_TITLE, title);
@@ -155,6 +159,7 @@ public class Database   {
         args.put(KEY_YEAR, year);
         args.put(KEY_START, startOfReading);
         args.put(KEY_END, endOfReading);
+        args.put(KEY_IMAGEPATH, image_path);
         return db.update(DATABASE_TABLE, args,
                 KEY_ROWID + "=" + rowId, null) > 0;
     }
