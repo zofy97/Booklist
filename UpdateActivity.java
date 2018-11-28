@@ -1,21 +1,37 @@
 package com.example.sophi.booklist;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+
+import static com.example.sophi.booklist.InputActivity.REQUEST_IMAGE_CAPTURE;
 
 public class UpdateActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     Database db;
@@ -23,13 +39,18 @@ public class UpdateActivity extends AppCompatActivity implements DatePickerDialo
     Button saveButton;
     Button startButton;
     Button endButton;
+    Button picButton;
     EditText title;
     EditText author;
     EditText genre;
     EditText year;
     EditText startOfReading;
     EditText endOfReading;
+    ImageView picture;
     boolean buttonChoice;
+    File photoFile;
+    Context context;
+    Bitmap bitmap;
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -42,6 +63,7 @@ public class UpdateActivity extends AppCompatActivity implements DatePickerDialo
 
         startButton = (Button) findViewById(R.id.picDateStart);
         endButton = (Button) findViewById(R.id.picDateEnd);
+        picButton = (Button) findViewById(R.id.takePicture);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -57,6 +79,28 @@ public class UpdateActivity extends AppCompatActivity implements DatePickerDialo
             }
         });
 
+        picButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException e) {
+
+                }
+                if (photoFile != null)  {
+                    Uri photoURI = FileProvider.getUriForFile(context, "com.example.sophi.fileprovider", photoFile);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                }
+                Log.v("TEST CAM", photoFile.getPath());
+                bitmap = BitmapFactory.decodeFile(photoFile.getPath());
+                //Bitmap bitmap = BitmapFactory.decodeFile("/storage/emulated/0/Android/data/com.example.sophi.booklist/files/Pictures/JPEG_20181127_162812_5379513410261349874.jpg");
+
+            }
+        });
+
+
+
         title = (EditText) findViewById(R.id.titleField);
         title.setText(cursor.getString(1));
         author = (EditText) findViewById(R.id.authorField);
@@ -69,6 +113,9 @@ public class UpdateActivity extends AppCompatActivity implements DatePickerDialo
         startOfReading.setText(cursor.getString(5));
         endOfReading = (EditText) findViewById(R.id.endOfReadingField);
         endOfReading.setText(cursor.getString(6));
+        picture = (ImageView) findViewById(R.id.takePictureField);
+        picture.setImageBitmap(BitmapFactory.decodeFile(cursor.getString(7)));
+
 
         saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener(){
@@ -84,8 +131,14 @@ public class UpdateActivity extends AppCompatActivity implements DatePickerDialo
                     String yearInput = year.getText().toString();
                     String startOfReadingInput = startOfReading.getText().toString();
                     String endOfReadingInput = endOfReading.getText().toString();
+                    String pictureInput;
+                    if(photoFile != null) {
+                        pictureInput = photoFile.getPath();
+                    } else {
+                        pictureInput = "";
+                    }
 
-                    //db.updateBook(cursor.getInt(0), titleInput, authorInput, genreInput, yearInput, startOfReadingInput, endOfReadingInput);
+                    db.updateBook(cursor.getInt(0), titleInput, authorInput, genreInput, yearInput, startOfReadingInput, endOfReadingInput, pictureInput);
                     String message = "Edited";
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
@@ -96,6 +149,29 @@ public class UpdateActivity extends AppCompatActivity implements DatePickerDialo
                 }
             }
         });
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent i) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK)   {
+            picture.setImageBitmap(BitmapFactory.decodeFile(photoFile.getAbsolutePath()));
+        }
+    }
+
+    String mCurrentPhotoPath;
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",   /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
     public void datePicker(View view){

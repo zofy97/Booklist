@@ -1,5 +1,6 @@
 package com.example.sophi.booklist;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -52,11 +53,16 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
     boolean buttonChoice;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     Context context = this;
-
+    Bitmap bitmap;
+    File photoFile;
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
+
+        bitmap = BitmapFactory.decodeFile("/storage/emulated/0/Android/data/com.example.sophi.booklist/files/Pictures/JPEG_20181127_162812_5379513410261349874.jpg");
+
+
         db = new Database(this);
 
         db.open();
@@ -64,6 +70,7 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
         startButton = (Button) findViewById(R.id.picDateStart);
         endButton = (Button) findViewById(R.id.picDateEnd);
         picButton = (Button) findViewById(R.id.takePicture);
+        picture = (ImageView) findViewById(R.id.takePictureField);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -82,7 +89,7 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
         picButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File photoFile = null;
+                photoFile = null;
                 try {
                     photoFile = createImageFile();
                 } catch (IOException e) {
@@ -93,8 +100,10 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                     startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
                 }
-                Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
-                picture.setImageBitmap(bitmap);
+                Log.v("TEST CAM", photoFile.getPath());
+                bitmap = BitmapFactory.decodeFile(photoFile.getPath());
+                //Bitmap bitmap = BitmapFactory.decodeFile("/storage/emulated/0/Android/data/com.example.sophi.booklist/files/Pictures/JPEG_20181127_162812_5379513410261349874.jpg");
+
             }
         });
 
@@ -104,7 +113,6 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
         year = (EditText) findViewById(R.id.yearField);
         startOfReading = (EditText) findViewById(R.id.startOfReadingField);
         endOfReading = (EditText) findViewById(R.id.endOfReadingField);
-        picture = (ImageView) findViewById(R.id.takePictureField);
 
         saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener(){
@@ -122,7 +130,11 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
                     String endOfReadingInput = endOfReading.getText().toString();
                     String pictureInput;
 
-                    db.insertBook(titleInput, authorInput, genreInput, yearInput, startOfReadingInput, endOfReadingInput, "");
+                    if(mCurrentPhotoPath == null)   {
+                        db.insertBook(titleInput, authorInput, genreInput, yearInput, startOfReadingInput, endOfReadingInput, "");
+                    } else {
+                        db.insertBook(titleInput, authorInput, genreInput, yearInput, startOfReadingInput, endOfReadingInput, mCurrentPhotoPath);
+                    }
                     String message = "Saved";
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
@@ -133,6 +145,12 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
                 }
             }
         });
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent i) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK)   {
+            picture.setImageBitmap(BitmapFactory.decodeFile(photoFile.getAbsolutePath()));
+        }
     }
 
     String mCurrentPhotoPath;
@@ -196,4 +214,6 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
                             getActivity(), year, month, day);
         }
     }
+
+
 }

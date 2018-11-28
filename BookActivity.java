@@ -1,21 +1,22 @@
 package com.example.sophi.booklist;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class BookActivity extends Activity {
+public class BookActivity extends AppCompatActivity {
     Database db;
     Cursor cursor;
     Context context = this;
@@ -26,6 +27,7 @@ public class BookActivity extends Activity {
     TextView yearField;
     TextView startOfReadingField;
     TextView endOfReadingField;
+    TextView wikiLinkField;
     Button editButton;
     Button deleteButton;
 
@@ -33,6 +35,7 @@ public class BookActivity extends Activity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book);
+
         db = new Database(this);
 
         db.open();
@@ -47,6 +50,7 @@ public class BookActivity extends Activity {
         yearField = (TextView) findViewById(R.id.year);
         startOfReadingField = (TextView) findViewById(R.id.startOfReading);
         endOfReadingField = (TextView) findViewById(R.id.endOfReading);
+        wikiLinkField = (TextView) findViewById(R.id.wikiLink);
 
         editButton = (Button) findViewById(R.id.editButton);
         deleteButton = (Button) findViewById(R.id.deleteButton);
@@ -99,6 +103,10 @@ public class BookActivity extends Activity {
         yearField.setText(cursor.getString(4));
         startOfReadingField.setText(cursor.getString(5));
         endOfReadingField.setText(cursor.getString(6));
-        pictureField.setImageResource(cursor.getInt(7));
+        pictureField.setImageBitmap(BitmapFactory.decodeFile(cursor.getString(7)));
+
+        String titleLink = cursor.getString(1);
+        String link = titleLink.replaceAll(" ", "_").toLowerCase();
+        wikiLinkField.setText("https://en.wikipedia.org/wiki/" + link + "?wprov=sfla1");
     }
 }

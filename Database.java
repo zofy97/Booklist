@@ -31,7 +31,7 @@ public class Database   {
                     "year text not null, " +
                     "startOfReading text not null, " +
                     "endOfReading text not null, " +
-                    "image_path text not null);";
+                    "image_path text);";
 
     private final Context context;
     private DatabaseHelper DBHelper;
@@ -121,9 +121,31 @@ public class Database   {
                                 KEY_YEAR,
                                 KEY_START,
                                 KEY_END,
-                                KEY_IMAGEPATH,
+                                KEY_IMAGEPATH
                         },
                 null, null, null, null, null);
+    }
+
+    public Cursor getLatestBook() throws SQLException
+    {
+        Cursor mCursor =
+                db.query(true, DATABASE_TABLE, new String[]
+                                {
+                                        KEY_ROWID,
+                                        KEY_TITLE,
+                                        KEY_AUTHOR,
+                                        KEY_GENRE,
+                                        KEY_YEAR,
+                                        KEY_START,
+                                        KEY_END,
+                                        KEY_IMAGEPATH
+                                },
+                        null, null, null, null, KEY_ROWID + " DESC", null);
+        if (mCursor != null)
+        {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
     }
 
     public Cursor getBook(long rowId) throws SQLException
