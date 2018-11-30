@@ -153,6 +153,8 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
         }
     }
 
+    /* Reference: The following code is from
+     ** https://developer.android.com/training/camera/photobasics */
     String mCurrentPhotoPath;
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -178,7 +180,10 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
     }
+    //Reference complete
 
+    /* Reference: The following code is from
+     ** https://www.numetriclabz.com/android-date-picker-tutorial/ */
     public void datePicker(View view){
         DatePickerFragment fragment = new DatePickerFragment();
         fragment.show(getSupportFragmentManager(), "date");
@@ -199,7 +204,6 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
         setDate(cal);
     }
 
-    //https://www.numetriclabz.com/android-date-picker-tutorial/
     public static class DatePickerFragment extends DialogFragment {
 
         @Override
@@ -214,4 +218,5 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
                             getActivity(), year, month, day);
         }
     }
+    // Reference complete
 }

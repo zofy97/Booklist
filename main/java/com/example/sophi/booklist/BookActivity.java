@@ -68,7 +68,8 @@ public class BookActivity extends AppCompatActivity {
             }
         });
 
-        //https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
+        /* Reference: The following code is from
+        ** https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android */
         deleteButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -96,6 +97,7 @@ public class BookActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
+        // Reference complete
 
         titleField.setText(cursor.getString(1));
         authorField.setText(cursor.getString(2));

@@ -165,6 +165,8 @@ public class UpdateActivity extends AppCompatActivity implements DatePickerDialo
         }
     }
 
+    /* Reference: The following code is from
+     ** https://developer.android.com/training/camera/photobasics */
     String mCurrentPhotoPath;
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -181,7 +183,10 @@ public class UpdateActivity extends AppCompatActivity implements DatePickerDialo
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
+    // Reference complete
 
+    /* Reference: The following code is from
+     ** //https://www.numetriclabz.com/android-date-picker-tutorial/ */
     public void datePicker(View view){
         DatePickerFragment fragment = new DatePickerFragment();
         fragment.show(getSupportFragmentManager(), "date");
@@ -202,7 +207,6 @@ public class UpdateActivity extends AppCompatActivity implements DatePickerDialo
         setDate(cal);
     }
 
-    //https://www.numetriclabz.com/android-date-picker-tutorial/
     public static class DatePickerFragment extends DialogFragment {
 
         @Override
@@ -217,4 +221,5 @@ public class UpdateActivity extends AppCompatActivity implements DatePickerDialo
                             getActivity(), year, month, day);
         }
     }
+    // Reference complete
 }
